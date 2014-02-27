@@ -32,18 +32,23 @@ namespace HTTPProject
             {
                 Console.WriteLine("Client connected");
                 StreamReader sr = new StreamReader(TCPClient.GetStream());
-                string message;
                 string answer = "";
-                while (true)
-                {
-                    message = sr.ReadLine();
-                    Console.WriteLine(message);
-                    answer ="Hello World";
-                    StreamWriter sw = new StreamWriter(TCPClient.GetStream());
-                    sw.AutoFlush = true;
-                    sw.WriteLine(answer);
+                string message="";
+                message = sr.ReadLine();
+                String RequestDirectory = message.Split(' ')[1];
+                Console.WriteLine(message);
+                answer =
+                    "HTTP/1.0 200 OK \r\n" +
+                    "\r\n";
+
+                StreamReader FileReader = new StreamReader(@"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPProject\" + RequestDirectory);
+                string Body = FileReader.ReadLine();
+                answer += Body;
+                StreamWriter sw = new StreamWriter(TCPClient.GetStream());
+                sw.AutoFlush = true;
+                sw.WriteLine(answer);
                      
-                }
+                
                 _tcpClient.Close();
 
             }
