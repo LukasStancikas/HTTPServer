@@ -13,7 +13,7 @@ namespace HTTPProject
     {
         static void Main(string[] args)
         {
-            TcpListener serverSocket = new TcpListener(1234); 
+            TcpListener serverSocket = new TcpListener(8080); 
             serverSocket.Start();
             while (true)
             {

@@ -1,1 +1,5 @@
 c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\bin\Debug\HTTPProject.exe.config
+c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\bin\Debug\HTTPProject.exe
+c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\bin\Debug\HTTPProject.pdb
+c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\obj\Debug\HTTPProject.exe
+c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\obj\Debug\HTTPProject.pdb

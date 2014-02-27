@@ -11,7 +11,7 @@ namespace HTTPProject
     class Service
     {
         private TcpClient _tcpClient;
-        public String Name;
+     
 
         public TcpClient TCPClient
         {
@@ -32,19 +32,19 @@ namespace HTTPProject
             {
                 Console.WriteLine("Client connected");
                 StreamReader sr = new StreamReader(TCPClient.GetStream());
-                string message = sr.ReadLine();
-                Name = message;
+                string message;
                 string answer = "";
                 while (true)
                 {
                     message = sr.ReadLine();
-                    Console.WriteLine(Name + " said: " + message);
-                    answer = Name + " said: " + message;
+                    Console.WriteLine(message);
+                    answer ="Hello World";
                     StreamWriter sw = new StreamWriter(TCPClient.GetStream());
                     sw.AutoFlush = true;
                     sw.WriteLine(answer);
                      
                 }
+                _tcpClient.Close();
 
             }
             catch (SocketException)
