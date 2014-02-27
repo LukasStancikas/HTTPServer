@@ -8,26 +8,17 @@ using System.Threading.Tasks;
 
 namespace HTTPProject
 {
-    public class ClientList
-    {
-        public List<TcpClient> TCPList = new List<TcpClient>();
-        public List<Stream> StreamList = new List<Stream>();
-    }
+
     class Server
     {
         static void Main(string[] args)
         {
-            TcpListener serverSocket = new TcpListener(1234);
-            ClientList ServerList = new ClientList();
+            TcpListener serverSocket = new TcpListener(1234); 
             serverSocket.Start();
             while (true)
             {
-
-                //Console.WriteLine("Initiated");
-                Service Service = new Service(serverSocket.AcceptTcpClient(), ServerList.TCPList, ServerList.StreamList);
-                Task.Factory.StartNew(() => Service.doIt(ServerList));
-
-
+                Service Service = new Service(serverSocket.AcceptTcpClient());
+                Task.Factory.StartNew(() => Service.doIt());
 
             }
 

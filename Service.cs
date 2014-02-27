@@ -18,15 +18,15 @@ namespace HTTPProject
             set { _tcpClient = value; }
             get { return _tcpClient; }
         }
-        public Service(TcpClient Client, List<TcpClient> TCPList, List<Stream> StreamList)
+        public Service(TcpClient Client)
         {
-            TCPList.Add(Client);
+        
             _tcpClient = Client;
-            StreamList.Add(Client.GetStream());
+        
 
         }
 
-        public void doIt(ClientList ServerList)
+        public void doIt()
         {
             try
             {
@@ -40,15 +40,10 @@ namespace HTTPProject
                     message = sr.ReadLine();
                     Console.WriteLine(Name + " said: " + message);
                     answer = Name + " said: " + message;
-                    foreach (var VARIABLE in ServerList.StreamList)
-                    {
-                        StreamWriter sw = new StreamWriter(VARIABLE);
-                        sw.AutoFlush = true;
-                        if (!TCPClient.GetStream().Equals(VARIABLE))
-                        {
-                            sw.WriteLine(answer);
-                        }
-                    }
+                    StreamWriter sw = new StreamWriter(TCPClient.GetStream());
+                    sw.AutoFlush = true;
+                    sw.WriteLine(answer);
+                     
                 }
 
             }
