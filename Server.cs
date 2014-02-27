@@ -17,7 +17,7 @@ namespace HTTPProject
     {
         static void Main(string[] args)
         {
-            TcpListener serverSocket = new TcpListener(1234);
+            TcpListener serverSocket = new TcpListener(80);
             ClientList ServerList = new ClientList();
             serverSocket.Start();
             while (true)
@@ -26,9 +26,6 @@ namespace HTTPProject
                 //Console.WriteLine("Initiated");
                 Service Service = new Service(serverSocket.AcceptTcpClient(), ServerList.TCPList, ServerList.StreamList);
                 Task.Factory.StartNew(() => Service.doIt(ServerList));
-
-
-
             }
 
             serverSocket.Stop();

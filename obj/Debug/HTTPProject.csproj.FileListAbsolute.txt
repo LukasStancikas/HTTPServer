@@ -1,1 +1,7 @@
 c:\users\lukas\documents\visual studio 2013\Projects\HTTPProject\HTTPProject\bin\Debug\HTTPProject.exe.config
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\bin\Debug\HTTPProject.exe.config
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\bin\Debug\HTTPProject.exe
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\bin\Debug\HTTPProject.pdb
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\obj\Debug\HTTPProject.csprojResolveAssemblyReference.cache
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\obj\Debug\HTTPProject.exe
+C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\obj\Debug\HTTPProject.pdb

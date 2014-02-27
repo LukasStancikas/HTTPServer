@@ -40,15 +40,6 @@ namespace HTTPProject
                     message = sr.ReadLine();
                     Console.WriteLine(Name + " said: " + message);
                     answer = Name + " said: " + message;
-                    foreach (var VARIABLE in ServerList.StreamList)
-                    {
-                        StreamWriter sw = new StreamWriter(VARIABLE);
-                        sw.AutoFlush = true;
-                        if (!TCPClient.GetStream().Equals(VARIABLE))
-                        {
-                            sw.WriteLine(answer);
-                        }
-                    }
                 }
 
             }
