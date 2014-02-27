@@ -11,7 +11,7 @@ namespace HTTPProject
     class Service
     {
         private TcpClient _tcpClient;
-     
+        private readonly String RootCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPProject\";
 
         public TcpClient TCPClient
         {
@@ -40,10 +40,15 @@ namespace HTTPProject
                 answer =
                     "HTTP/1.0 200 OK \r\n" +
                     "\r\n";
-
-                StreamReader FileReader = new StreamReader(@"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPProject\" + RequestDirectory);
-                string Body = FileReader.ReadLine();
-                answer += Body;
+               
+              
+                using (StreamReader FileReader = new StreamReader(RootCatalog + RequestDirectory))
+                {
+                    
+                    string Body = FileReader.ReadLine();
+                    answer += Body;
+                }
+              
                 StreamWriter sw = new StreamWriter(TCPClient.GetStream());
                 sw.AutoFlush = true;
                 sw.WriteLine(answer);
