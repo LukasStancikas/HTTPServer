@@ -10,9 +10,7 @@ namespace HTTPProject
 {   
     /**
      *  TODO: 
-     *      Exceptions - file not found cautch in body of Response() have to cause sendin of fileNotFound code
-            
-     
+     *      Response() - in case of FileNotFoundException should be aslo sended Error code, not OK code
      */
    
     internal class Service

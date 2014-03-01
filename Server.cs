@@ -19,7 +19,6 @@ namespace HTTPProject
             {
                 Service Service = new Service(serverSocket.AcceptTcpClient());
                 Task.Factory.StartNew(() => Service.doIt());
-                
             }
             Console.WriteLine("Server is shutting down ...");
             serverSocket.Stop();
