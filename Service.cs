@@ -7,64 +7,100 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HTTPProject
-{
-    class Service
+{   
+    /**
+     *  TODO: 
+     *      Exceptions - file not found cautch in body of Response() have to cause sendin of fileNotFound code
+            
+     
+     */
+   
+    internal class Service
     {
+        private readonly String RootCatalog =
+            @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\";
+
+        private StreamReader reader;
+        private StreamWriter writer;
         private TcpClient _tcpClient;
-        private readonly String RootCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPProject\";
+        private string requestedFile;
 
         public TcpClient TCPClient
         {
             set { _tcpClient = value; }
             get { return _tcpClient; }
         }
+
         public Service(TcpClient Client)
         {
-        
             _tcpClient = Client;
-        
-
+            reader = new StreamReader(Client.GetStream());
+            writer = new StreamWriter(Client.GetStream());
+            requestedFile = null;
         }
 
-        public void doIt()
+        private void ReadRequest()
         {
+            string line = "";
+            do
+            {
+                line = reader.ReadLine();
+                if (requestedFile == null)
+                    requestedFile = line.Split(' ')[1];
+            } while (line.Length != 0);
+        }
+
+        private void Response()
+        {
+            string answer =
+                "HTTP/1.0 200 OK \r\n" +
+                "\r\n";
+            if (requestedFile == "/")
+            {
+                requestedFile = "/index.html";
+            }
             try
             {
-                Console.WriteLine("Client connected");
-                StreamReader sr = new StreamReader(TCPClient.GetStream());
-                string answer = "";
-                string message="";
-                message = sr.ReadLine();
-                String RequestDirectory = message.Split(' ')[1];
-                Console.WriteLine(message);
-                answer =
-                    "HTTP/1.0 200 OK \r\n" +
-                    "\r\n";
-               
-              
-                using (StreamReader FileReader = new StreamReader(RootCatalog + RequestDirectory))
+                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
                 {
-                    
                     string Body = FileReader.ReadLine();
                     answer += Body;
                 }
-              
-                StreamWriter sw = new StreamWriter(TCPClient.GetStream());
-                sw.AutoFlush = true;
-                sw.WriteLine(answer);
-                     
-                
-                _tcpClient.Close();
+            }
+            catch (FileNotFoundException ex)
+            {
+                requestedFile = "/page_not_found.html";
+                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
+                {
+                    string Body = FileReader.ReadLine();
+                    answer += Body;
+                }
+            }
+            writer.AutoFlush = true;
+            writer.WriteLine(answer);
+        }
 
-            }
-            catch (SocketException)
-            {
-                Console.WriteLine("Caught SocketException");
-            }
-            catch (IOException)
-            {
-                Console.WriteLine("Caught IOException");
-            }
+    public void doIt()
+        {
+
+        try
+        {
+            ReadRequest();
+            Response();
+            Console.WriteLine("Request:" + requestedFile);
+        }
+        catch (SocketException)
+        {
+            Console.WriteLine("Caught SocketException");
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("Caught IOException");
+        }
+        finally
+        {
+            _tcpClient.Close();
+        }
         }
     }
 }

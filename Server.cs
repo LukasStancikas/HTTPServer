@@ -15,14 +15,15 @@ namespace HTTPProject
         {
             TcpListener serverSocket = new TcpListener(8080); 
             serverSocket.Start();
-            while (true)
+            while (Console.ReadLine() != "exit")
             {
                 Service Service = new Service(serverSocket.AcceptTcpClient());
                 Task.Factory.StartNew(() => Service.doIt());
-
+                
             }
-
+            Console.WriteLine("Server is shutting down ...");
             serverSocket.Stop();
+            return;
         }
     }
 }
