@@ -16,7 +16,7 @@ namespace HTTPProject
     internal class Service
     {
         private readonly String RootCatalog =
-            @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\";
+            @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPServer";
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -97,6 +97,7 @@ namespace HTTPProject
                 using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
                 {
                     string Body = FileReader.ReadLine();
+                    Console.WriteLine(Body);
                     answer += Body;
                 }
             }
