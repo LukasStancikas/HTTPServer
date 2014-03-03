@@ -68,6 +68,8 @@ namespace HTTPProject
             catch (FileNotFoundException ex)
             {
                 requestedFile = "/page_not_found.html";
+                answer =    "HTTP/1.0 404 Not Found \r\n" +
+                            "\r\n";
                 using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
                 {
                     string Body = FileReader.ReadLine();
