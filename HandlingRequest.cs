@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HTTPProject
-{
-    class HandlingRequest
+{class HandlingRequest
     {
         public HandlingRequest(String requestLine,ref String requestedFile,ref String answer)
         {

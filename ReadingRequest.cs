@@ -12,6 +12,8 @@ namespace HTTPProject
 {
     class ReadingRequest
     {
+
+
         public ReadingRequest(TcpClient Client, ref String fullRequest, ref String requestedFile,ref String requestLine)
         {
             string line = "";

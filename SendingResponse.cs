@@ -10,6 +10,8 @@ namespace HTTPProject
 {
     class SendingResponse
     {
+
+
         public SendingResponse(TcpClient Client,ref String _answer, String RootCatalog,ref String requestedFile)
         {
             StreamWriter writer = new StreamWriter(Client.GetStream());
