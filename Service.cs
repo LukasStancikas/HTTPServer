@@ -12,11 +12,13 @@ namespace HTTPProject
      *  TODO: 
      *      Response() - in case of FileNotFoundException should be aslo sended Error code, not OK code
      */
-   
     internal class Service
     {
-        private readonly String RootCatalog =
+        private static readonly String DavidsCatalog =
+            @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer\";
+        private static readonly String LukasCatalog =
             @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPServer";
+        private String RootCatalog = DavidsCatalog;
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -62,7 +64,7 @@ namespace HTTPProject
 
         private string NameToType(string fileName)
         {
-            string[,] array2Db = new string[, ]
+            string[,] array2Db = new string[,]
             {
                 {"html", "text/html"},
                 {"htm", "text/html"},
@@ -127,7 +129,6 @@ namespace HTTPProject
             writer.AutoFlush = true;
             writer.WriteLine(answer);
         }
-
         public string Analize()
         {
             string answer = null;
