@@ -49,7 +49,7 @@ namespace HTTPProject
             } while (line.Length != 0);
         }
 
-        private bool IsPossibleType(string fileName)
+        private string NameToType(string fileName)
         {
             string[,] array2Db = new string[, ]
             {
@@ -69,11 +69,10 @@ namespace HTTPProject
             {
                 if (array2Db[i,0] == fileType)
                 {
-                    requestedFileType = array2Db[i,1];
-                    return true;
+                    return array2Db[i, 1];
                 }
             }
-            return false;
+            return null;
         }
 
         private void AnalyzeFileType()
