@@ -17,15 +17,16 @@ namespace HTTPProject
     internal class Service
     {
         private readonly String RootCatalog =
-            @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPProject\HTTPServer";
+            @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServer\HTTPServer";
 
         private StreamReader reader;
         private StreamWriter writer;
         private TcpClient _tcpClient;
-        private string requestedFile;
-        private string requestedFileType;
-        private string requestLine;
-        private string fullRequest;
+        private String requestedFile;
+        private String requestedFileType;
+        private String requestLine;
+        private String fullRequest;
+        private String answer;
         public TcpClient TCPClient
         {
             set { _tcpClient = value; }
@@ -187,8 +188,11 @@ namespace HTTPProject
 
         try
         {
-            ReadRequest();
-            Response();
+            //ReadRequest();
+            new ReadingRequest(_tcpClient, ref fullRequest, ref requestedFile,ref requestLine);
+            new HandlingRequest(requestLine, ref requestedFile, ref answer);
+            new SendingResponse(_tcpClient, ref answer, RootCatalog, ref requestedFile);
+            //Response();
             Console.WriteLine("Request:" + requestedFile);
         }
         catch (SocketException)
