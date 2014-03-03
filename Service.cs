@@ -22,7 +22,7 @@ namespace HTTPProject
         private StreamWriter writer;
         private TcpClient _tcpClient;
         private string requestedFile;
-
+        private string requestedFileType;
         public TcpClient TCPClient
         {
             set { _tcpClient = value; }
@@ -35,6 +35,7 @@ namespace HTTPProject
             reader = new StreamReader(Client.GetStream());
             writer = new StreamWriter(Client.GetStream());
             requestedFile = null;
+            requestedFileType = null;
         }
 
         private void ReadRequest()
@@ -48,6 +49,41 @@ namespace HTTPProject
             } while (line.Length != 0);
         }
 
+        private bool IsPossibleType(string fileName)
+        {
+            string[,] array2Db = new string[, ]
+            {
+                {"html", "text/html"},
+                {"htm", "text/html"},
+                {"doc", "application/msword"},
+                {"gif", "image/gif"},//gif 	image/gif
+                {"jpg", "image/jpeg"},//jpg 	image/jpeg
+                {"pdf", "application/pdf"},//pdf 	application/pdf
+                {"css", "text/css"},//css 	text/css
+                {"xml", "text/xml"},//xml 	text/xml  	
+                {"jar", "application/x-java-archive"},//jar application/x-java-archive
+            };
+            string fileType = fileName.Substring('.');
+
+            for (int i = 0; i < array2Db.Length; i++)
+            {
+                if (array2Db[i,0] == fileType)
+                {
+                    requestedFileType = array2Db[i,1];
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void AnalyzeFileType()
+        {
+            if (requestedFile.Split('.')[1].Length>3);
+        }
+        private void AnalyzeRequest()
+        {
+            AnalyzeFileType();
+        }
         private void Response()
         {
             string answer =
