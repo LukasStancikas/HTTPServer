@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -110,6 +111,17 @@ namespace HTTPProject
                 using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
                 {
                     string Body = FileReader.ReadToEnd();
+                    answer += Body;
+                }
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                requestedFile = "/directory_not_found.html";
+                answer = "HTTP/1.0 404 Not Found\r\n" +
+                           "\r\n";
+                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
+                {
+                    string Body = FileReader.ReadLine();
                     answer += Body;
                 }
             }

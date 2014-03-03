@@ -53,7 +53,6 @@ namespace HTTPProject
                
             }
 
-
             Console.WriteLine("Server is shutting down ...");
             serverSocket.Stop();
             return;
