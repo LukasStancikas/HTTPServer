@@ -55,7 +55,7 @@ namespace HTTPProject
            
            
             writer.AutoFlush = false;
-
+            
             writer.WriteLine(answer);
             Console.WriteLine(answer);
          
