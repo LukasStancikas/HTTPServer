@@ -57,29 +57,21 @@ namespace HTTPProject
         }
         private string NameToType(string fileName)
         {
-            string[,] array2Db = new string[,]
-            {
-                {"html", "text/html"},
-                {"htm", "text/html"},
-                {"doc", "application/msword"},
-                {"gif", "image/gif"},//gif 	image/gif
-                {"jpg", "image/jpeg"},//jpg 	image/jpeg
-                {"pdf", "application/pdf"},//pdf 	application/pdf
-                {"css", "text/css"},//css 	text/css
-                {"xml", "text/xml"},//xml 	text/xml  	
-                {"jar", "application/x-java-archive"},//jar application/x-java-archive
-            };
-          
+            Dictionary<string,string> allowedTypes = new Dictionary<string, string>();
+            allowedTypes.Add("html", "text/html");
+            allowedTypes.Add("htm", "text/html");
+            allowedTypes.Add("doc", "application/msword");
+            allowedTypes.Add("gif", "image/gif");
+            allowedTypes.Add("jpg", "image/jpeg");
+            allowedTypes.Add("pdf", "application/pdf");
+            allowedTypes.Add("css", "text/css");
+            allowedTypes.Add("xml", "text/xml");
+            allowedTypes.Add("jar", "application/x-java-archive");
             if (fileName.Contains("."))
             {
             string fileType = fileName.Split('.')[1];
-            for (int i = 0; i < array2Db.Length; i++)
-            {
-                if (array2Db[i, 0] == fileType)
-                {
-                    return array2Db[i, 1];
-                }
-            }
+                if (allowedTypes.ContainsKey(fileType))
+                    return allowedTypes[fileType];
             }
             return "application/octet-stream";
         }
