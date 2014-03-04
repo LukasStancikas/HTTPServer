@@ -10,8 +10,6 @@ namespace HTTPProject
 {
     class SendingResponse
     {
-
-
         public SendingResponse(TcpClient Client,ref String _answer, String RootCatalog,ref String requestedFile)
         {
             StreamWriter writer = new StreamWriter(Client.GetStream());
@@ -44,8 +42,8 @@ namespace HTTPProject
                 }
                 catch (FileNotFoundException ex)
                 {
-                    requestedFile = "/page_not_found.html";
-                    answer = "HTTP/1.0 404 Not Found\r\n" +
+                    requestedFile =     "/page_not_found.html";
+                    answer =    "HTTP/1.0 404 Not Found\r\n" +
                                 "\r\n";
                     using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
                     {

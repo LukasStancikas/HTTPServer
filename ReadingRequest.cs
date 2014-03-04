@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web ;
 namespace HTTPProject
 {
     class ReadingRequest
