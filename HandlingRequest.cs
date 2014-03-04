@@ -12,15 +12,15 @@ namespace HTTPProject
         {
             String[] Analizable = requestLine.Split(' ');
             String Type = null;
-
+            answer =
+                "HTTP/1.0 200 OK\r\n";
             Console.WriteLine(Type);
             if ((Analizable[0].Equals("GET")) || (Analizable[0].Equals("HEAD")) || (Analizable[0].Equals("POST")))
             {
             }
             else
             {
-                answer = "HTTP/1.0 400 Illegal request\r\n" +
-                         "\r\n";
+                answer = "HTTP/1.0 400 Illegal request\r\n";
                 requestedFile = "/Illegal_Request.html";
             }
             if ((Analizable[2].Equals("HTTP/1.0")) || (Analizable[2].Equals("HTTP/1.1")))
@@ -28,8 +28,7 @@ namespace HTTPProject
             }
             else
             {
-                answer = "HTTP/1.0 400 Illegal protocol\r\n" +
-                         "\r\n";
+                answer = "HTTP/1.0 400 Illegal protocol\r\n";
                 requestedFile = "/Illegal_Protocol.html";
             }
             String temp = Analizable[2].Substring(0, Analizable[2].Length - 1);
@@ -38,8 +37,7 @@ namespace HTTPProject
             }
             else
             {
-                answer = "HTTP/1.0 400 Illegal request\r\n" +
-                         "\r\n";
+                answer = "HTTP/1.0 400 Illegal request\r\n";
                 requestedFile = "/Illegal_Request.html";
             }
 
@@ -48,16 +46,14 @@ namespace HTTPProject
             {
                 requestedFile = "/index.html";
             }
-            if (Analizable[1].Contains("."))
-            {
-                Type = NameToType(Analizable[1]);
-            }
-            if (!Type.Equals(null))
-            {
-                answer = "HTTP/1.0 200 OK\r\nContent-Type: "
-                         + Type + "\r\n\r\n";
-            }
-            Console.WriteLine(answer);
+          
+                Type = NameToType(requestedFile);
+            
+           
+                answer += "Content-Type: "
+                         + Type + "\r\n";
+            
+            
         }
         private string NameToType(string fileName)
         {
@@ -73,14 +69,17 @@ namespace HTTPProject
                 {"xml", "text/xml"},//xml 	text/xml  	
                 {"jar", "application/x-java-archive"},//jar application/x-java-archive
             };
+          
+            if (fileName.Contains("."))
+            {
             string fileType = fileName.Split('.')[1];
-
             for (int i = 0; i < array2Db.Length; i++)
             {
                 if (array2Db[i, 0] == fileType)
                 {
                     return array2Db[i, 1];
                 }
+            }
             }
             return "application/octet-stream";
         }

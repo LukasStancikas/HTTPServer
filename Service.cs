@@ -36,31 +36,12 @@ namespace HTTPProject
         public Service(TcpClient Client)
         {
             _tcpClient = Client;
-            //            reader = new StreamReader(Client.GetStream());
-            //            writer = new StreamWriter(Client.GetStream());
             requestedFile = null;
             requestedFileType = null;
             requestLine = null;
             fullRequest = null;
         }
 
-        //        private void ReadRequest()
-        //        {
-        //            string line = "";
-        //            fullRequest = "";
-        //            line = reader.ReadLine();
-        //            requestLine = line;
-        //            requestedFile = line.Split(' ')[1];
-        //            fullRequest += line + "\r\n";
-        //            do
-        //            {
-        //                line = reader.ReadLine();
-        //                fullRequest += line + "\r\n";
-        //
-        //            } while (line.Length != 0);
-        //        
-        //           
-        //        }
 
 
 
@@ -74,101 +55,18 @@ namespace HTTPProject
 
             AnalyzeFileType();
         }
-        //        private void Response()
-        //        {
-        //            string answer =
-        //                "HTTP/1.0 200 OK\r\n" +
-        //                "\r\n";
-        //            if (Analize() != null)
-        //            {
-        //                answer = Analize();
-        //            }
-        //            try
-        //            {
-        //                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-        //                {
-        //                    string Body = FileReader.ReadToEnd();
-        //                    answer += Body;
-        //                }
-        //            }
-        //            catch (DirectoryNotFoundException e)
-        //            {
-        //                requestedFile = "/directory_not_found.html";
-        //                answer = "HTTP/1.0 404 Not Found\r\n" +
-        //                           "\r\n";
-        //                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-        //                {
-        //                    string Body = FileReader.ReadLine();
-        //                    answer += Body;
-        //                }
-        //            }
-        //            catch (FileNotFoundException ex)
-        //            {
-        //                requestedFile = "/page_not_found.html";
-        //                answer =    "HTTP/1.0 404 Not Found\r\n" +
-        //                            "\r\n";
-        //                using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-        //                {
-        //                    string Body = FileReader.ReadLine();
-        //                    answer += Body;
-        //                }
-        //            }
-        //            writer.AutoFlush = true;
-        //            writer.WriteLine(answer);
-        //        }
-
-        //        public string Analize()
-        //        {
-        //            string answer = null;
-        //            String[] Analizable = requestLine.Split(' ');
-        //
-        //            if ((Analizable[0].Equals("GET")) || (Analizable[0].Equals("HEAD")) || (Analizable[0].Equals("POST")))
-        //            {
-        //            }
-        //            else
-        //            {
-        //                answer = "HTTP/1.0 400 Illegal request\r\n" +
-        //                         "\r\n";
-        //                requestedFile = "/Illegal_Request.html";
-        //            }
-        //            if ((Analizable[2].Equals("HTTP/1.0")) || (Analizable[2].Equals("HTTP/1.1")))
-        //            {
-        //            }
-        //            else
-        //            {
-        //                answer = "HTTP/1.0 400 Illegal protocol\r\n" +
-        //                         "\r\n";
-        //                requestedFile = "/Illegal_Protocol.html";
-        //            }
-        //            String temp = Analizable[2].Substring(0, Analizable[2].Length - 1);
-        //            if ((temp.Equals("HTTP/1.")) || (temp.Equals("HTTP/1.")))
-        //            {
-        //            }
-        //            else
-        //            {
-        //                answer = "HTTP/1.0 400 Illegal request\r\n" +
-        //                         "\r\n";
-        //                requestedFile = "/Illegal_Request.html";
-        //            }
-        //           
-        //
-        //            if (requestedFile == "/")
-        //            {
-        //                requestedFile = "/index.html";
-        //            }
-        //            return answer;
-        //        }
+       
 
         public void doIt()
         {
 
             try
             {
-                //ReadRequest();
+               
                 new ReadingRequest(_tcpClient, ref fullRequest, ref requestedFile, ref requestLine);
                 new HandlingRequest(requestLine, ref requestedFile, ref answer);
                 new SendingResponse(_tcpClient, ref answer, RootCatalog, ref requestedFile);
-                //Response();
+                
                 Console.WriteLine("Request:" + requestedFile);
             }
             catch (SocketException)

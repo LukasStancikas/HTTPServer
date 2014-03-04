@@ -14,30 +14,12 @@ namespace HTTPProject
     {
         static void Main(string[] args)
         {
-            TcpListener serverSocket = new TcpListener(8080); 
+            TcpListener serverSocket = new TcpListener(8080);
             serverSocket.Start();
             Console.WriteLine("'start' - start the server");
             Console.WriteLine("'exit' - exit the program/close the Server");
             String Command = "";
             bool Started = false;
-            TcpListener closeSocket = new TcpListener(8081);
-
-            Task.Factory.StartNew(() =>
-            {
-                Started = true;
-                Console.WriteLine("Server Started");
-                while (true)
-                {
-                    Service Service = new Service(serverSocket.AcceptTcpClient());
-                    Task.Factory.StartNew(() => Service.doIt());
-                }
-
-            });
-            closeSocket.Start();
-            closeSocket.AcceptTcpClient();
-            Console.WriteLine("Server is shutting down ...");
-            serverSocket.Stop();
-            /*
             while (Command.ToLower() != "exit")
             {
                 Command = Console.ReadLine().ToLower();
@@ -68,10 +50,11 @@ namespace HTTPProject
 
 
                 }
-               
-            }*/
 
-            
+            }
+
+            Console.WriteLine("Server is shutting down ...");
+            serverSocket.Stop();
             return;
         }
     }
