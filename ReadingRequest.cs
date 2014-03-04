@@ -18,6 +18,7 @@ namespace HTTPProject
         {
             string line = "";
             fullRequest = "";
+
             StreamReader reader = new StreamReader(Client.GetStream());
             line = reader.ReadLine();
             if (requestLine == null)
