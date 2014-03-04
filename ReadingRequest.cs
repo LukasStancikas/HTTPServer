@@ -7,14 +7,14 @@ using System.Net.Sockets;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web ;
+
 namespace HTTPProject
 {
     class ReadingRequest
     {
 
 
-        public ReadingRequest(TcpClient Client, ref String fullRequest, ref String requestedFile,ref String requestLine)
+        public ReadingRequest(TcpClient Client, ref String fullRequest, ref String requestedFile, ref String requestLine)
         {
             string line = "";
             fullRequest = "";
@@ -28,6 +28,7 @@ namespace HTTPProject
                 line = reader.ReadLine();
                 fullRequest += line + "\r\n";
             } while (line.Length != 0);
+
         }
     }
 }

@@ -10,49 +10,57 @@ namespace HTTPProject
 {
     class SendingResponse
     {
-        public SendingResponse(TcpClient Client,ref String _answer, String RootCatalog,ref String requestedFile)
+
+
+        public SendingResponse(TcpClient Client, ref String _answer, String RootCatalog, ref String requestedFile)
         {
             StreamWriter writer = new StreamWriter(Client.GetStream());
-
-                string answer =
-                    "HTTP/1.0 200 OK\r\n" +
-                    "\r\n";
-                if (answer != null)
-                {
-                    _answer = answer;
-                }
-                try
-                {
-                    using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-                    {
-                        string Body = FileReader.ReadToEnd();
-                        answer += Body;
-                    }
-                }
-                catch (DirectoryNotFoundException e)
-                {
-                    requestedFile = "/directory_not_found.html";
-                    answer = "HTTP/1.0 404 Not Found\r\n" +
-                               "\r\n";
-                    using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-                    {
-                        string Body = FileReader.ReadLine();
-                        answer += Body;
-                    }
-                }
-                catch (FileNotFoundException ex)
-                {
-                    requestedFile =     "/page_not_found.html";
-                    answer =    "HTTP/1.0 404 Not Found\r\n" +
-                                "\r\n";
-                    using (StreamReader FileReader = new StreamReader(RootCatalog + requestedFile))
-                    {
-                        string Body = FileReader.ReadLine();
-                        answer += Body;
-                    }
-                }
-                writer.AutoFlush = true;
-                writer.WriteLine(answer);
+            FileStream TempStream = null;
+            string answer =
+                "HTTP/1.0 200 OK\r\n" +
+                "\r\n";
+            if (answer != null)
+            {
+                _answer = answer;
             }
+
+            try
+            {
+                using (FileStream FileReader = new FileStream(RootCatalog + requestedFile, FileMode.Open))
+                {
+
+
+                    FileReader.CopyTo(TempStream);
+                }
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                requestedFile = "/directory_not_found.html";
+                answer = "HTTP/1.0 404 Not Found\r\n" +
+                         "\r\n";
+                using (FileStream FileReader = new FileStream(RootCatalog + requestedFile, FileMode.Open))
+                {
+
+                    FileReader.CopyTo(TempStream);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                requestedFile = "/page_not_found.html";
+                answer = "HTTP/1.0 404 Not Found\r\n" +
+                         "\r\n";
+                using (FileStream FileReader = new FileStream(RootCatalog + requestedFile, FileMode.Open))
+                {
+
+                    FileReader.CopyTo(TempStream);
+                }
+            }
+
+            writer.AutoFlush = true;
+            writer.Write(answer);
+
+            writer.WriteLine(TempStream);
+
+        }
     }
 }
