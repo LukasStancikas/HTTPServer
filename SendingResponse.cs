@@ -21,14 +21,9 @@ namespace HTTPProject
             try
             {
 
-               
-                    Console.WriteLine("test");
-                    
+               // Here I read from the file in server
                     TempStream = new FileStream(RootCatalog + requestedFile, FileMode.Open);
                     
-               
-                    Console.WriteLine("test");
-                  
                
 
             }
@@ -55,12 +50,15 @@ namespace HTTPProject
            
            
             writer.AutoFlush = false;
+            // with first writeline i input 'HTTP/1.0 ... ...\r\nContent-Type: ' and a string Type (it's all in the 'answer')
             
             writer.WriteLine(answer);
             Console.WriteLine(answer);
-         
+            //with second writeline i input an empty line to seperate the bodies
             writer.WriteLine();
             writer.Flush();
+            //now the problem is inputing data i read from the file to the writer, it only accepts Strings, and when using FileStream
+            //I don't get a string from reading the file. That's why I'm figuring out how to send the data of the jpg/html etc..
             TempStream.CopyTo(Client.GetStream());
           
             
