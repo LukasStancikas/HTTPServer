@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace HTTPProject
         public HandlingRequest(String requestLine, ref String requestedFile, ref String answer)
         {
             String[] Analizable = requestLine.Split(' ');
+            
+
             String Type = null;
             answer =
                 "HTTP/1.0 200 OK\r\n";
-            Console.WriteLine(Type);
+            
             if ((Analizable[0].Equals("GET")) || (Analizable[0].Equals("HEAD")) || (Analizable[0].Equals("POST")))
             {
             }
@@ -69,9 +72,13 @@ namespace HTTPProject
             allowedTypes.Add("jar", "application/x-java-archive");
             if (fileName.Contains("."))
             {
-            string fileType = fileName.Split('.')[1];
+            string fileType = Path.GetExtension(fileName).Substring(1);
                 if (allowedTypes.ContainsKey(fileType))
+                {
+                    Console.WriteLine(fileType);
                     return allowedTypes[fileType];
+                }
+                    
             }
             return "application/octet-stream";
         }

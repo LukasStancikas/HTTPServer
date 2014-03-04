@@ -11,13 +11,13 @@ namespace HTTPProject
 {
     /**
      *  TODO: 
-     *      Response() - in case of FileNotFoundException should be aslo sended Error code, not OK code
+     *      
      */
 
     internal class Service
     {
         private readonly String RootCatalog =
-            @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServer";
+            @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -33,13 +33,21 @@ namespace HTTPProject
             get { return _tcpClient; }
         }
 
-        public Service(TcpClient Client)
+        public Service(TcpClient Client, int Port)
         {
             _tcpClient = Client;
             requestedFile = null;
             requestedFileType = null;
-            requestLine = null;
+            
             fullRequest = null;
+            if (Port == Server.DefaultPort)
+            {
+                requestLine = null;
+            }
+            if (Port == Server.ShutdownPort)
+            {
+                requestLine = "GET /Shutdown.html HTTP/1.1";
+            }
         }
 
 

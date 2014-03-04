@@ -20,8 +20,24 @@ namespace HTTPProject
             fullRequest = "";
             StreamReader reader = new StreamReader(Client.GetStream());
             line = reader.ReadLine();
-            requestLine = line;
-            requestedFile = line.Split(' ')[1];
+            if (requestLine == null)
+            {
+                requestLine = line;
+            }
+            Console.WriteLine(requestLine);
+            try
+            {
+                List<String> TempDirectory = requestLine.Split(' ').ToList();
+                TempDirectory.RemoveAt(0);
+                TempDirectory.RemoveAt(TempDirectory.Count-1);
+                requestedFile = String.Join(" ", TempDirectory.ToArray());
+                requestedFile = Uri.UnescapeDataString(requestedFile);
+                Console.WriteLine(requestedFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             fullRequest += line + "\r\n";
             do
             {
