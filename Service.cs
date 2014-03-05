@@ -18,7 +18,7 @@ namespace HTTPProject
     {
         private static string DavidsCatalog = @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
         private static string LukasCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
-        private readonly String RootCatalog = LukasCatalog;
+        public readonly String RootCatalog = LukasCatalog;
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -57,19 +57,18 @@ namespace HTTPProject
                 new HandlingRequest(ref request, ref response);
                 //new SendingResponse(_tcpClient, ref answer, RootCatalog, ref requestedFile);
                 new SendingResponse(_tcpClient, ref response, RootCatalog);
-
-                Console.WriteLine("Request:" + requestedFile);
             }
             catch (SocketException)
             {
-                Console.WriteLine("Caught SocketException");
+                Server.Logger.Warn("Service.cs: Caught SocketException");
             }
             catch (IOException)
             {
-                Console.WriteLine("Caught IOException");
+                Server.Logger.Warn("Service.cs: Caught IOException");
             }
             finally
             {
+                Server.Logger.Info("Socket connection closed with the Client");
                 _tcpClient.Close();
             }
         }

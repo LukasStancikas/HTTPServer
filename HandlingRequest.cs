@@ -38,7 +38,9 @@ namespace HTTPProject
             }
 
             response.FileType = NameToType(response.File);
-;
+           
+            Server.Logger.Info("Response content-type:" + response.FileType);
+            Server.Logger.Info("Response File:" + response.File);
         }
         private string NameToType(string fileName)
         {
@@ -57,7 +59,7 @@ namespace HTTPProject
             string fileType = Path.GetExtension(fileName).Substring(1);
                 if (allowedTypes.ContainsKey(fileType))
                 {
-                    Console.WriteLine(fileType);
+                   
                     return allowedTypes[fileType];
                 }   
             }

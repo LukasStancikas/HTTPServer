@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using log4net.Repository.Hierarchy;
 
 namespace HTTPProject
 {
@@ -28,7 +29,7 @@ namespace HTTPProject
             {
                 requestLine = line;
             }
-            Console.WriteLine(requestLine);
+            Server.Logger.Info("Client Request Line:" + requestLine);
             try
             {
                 List<String> TempDirectory = requestLine.Split(' ').ToList();
@@ -36,11 +37,12 @@ namespace HTTPProject
                 TempDirectory.RemoveAt(TempDirectory.Count - 1);
                 requestedFile = String.Join(" ", TempDirectory.ToArray());
                 requestedFile = Uri.UnescapeDataString(requestedFile);
-                Console.WriteLine(requestedFile);
+               
+                Server.Logger.Info("Client requested file:" + requestedFile);
             }
             catch (NullReferenceException e)
             {
-                Console.WriteLine("Caught: Null Reference exception - invald format of request");
+                Server.Logger.Warn("Client sent null request. Caught NullReferenceException");
             }
             fullRequest += line + "\r\n";
             do
@@ -48,7 +50,7 @@ namespace HTTPProject
                 line = reader.ReadLine();
                 fullRequest += line + "\r\n";
             } while (line.Length != 0);
-
+            Server.Logger.Info("Client's full request data:\r\n" + fullRequest);
             if (request == null) request = new HTTPRequest();
 
             request.Method = requestLine.Split(' ')[0];
