@@ -43,8 +43,6 @@ namespace HTTPProject
                 answer = "HTTP/1.0 400 Illegal request\r\n";
                 requestedFile = "/Illegal_Request.html";
             }
-
-
             if (requestedFile == "/")
             {
                 requestedFile = "/index.html";
@@ -55,8 +53,48 @@ namespace HTTPProject
            
                 answer += "Content-Type: "
                          + Type + "\r\n";
-            
-            
+        }
+        public HandlingRequest(ref HTTPRequest request, ref HTTPResponse response)
+        {
+            String Type = null;
+            // String answer ="HTTP/1.0 200 OK\r\n";
+            response = new HTTPResponse("HTTP/1.0",200,"OK",null,null);
+
+            if ((request.Method.Equals("GET")) || (request.Method.Equals("HEAD")) || (request.Method.Equals("POST")))
+            {
+            }
+            else
+            {
+                response = new HTTPResponse("HTTP/1.0", 400, "Illegal request",null,null);
+                response.File = "/Illegal_Request.html";
+            }
+            if ((request.Protocol.Equals("HTTP/1.0")) || (request.Protocol.Equals("HTTP/1.1")))
+            {
+            }
+            else
+            {
+                //answer = "HTTP/1.0 400 Illegal protocol\r\n";
+                response = new HTTPResponse("HTTP/1.0", 400, "protocol",null,null);
+                response.File = "/Illegal_Protocol.html";
+            }
+            String temp = request.Protocol.Substring(0, request.Protocol.Length - 1);
+
+            if ((temp.Equals("HTTP/1.")) || (temp.Equals("HTTP/1.")))
+            {
+            }
+            else
+            {
+                response = new HTTPResponse("HTTP/1.0", 400, "Illegal request", null,null);
+                response.File = "/Illegal_Request.html";
+            }
+            response.File = request.URL;
+            if (response.File == "/")
+            {
+                response.File = "/index.html";
+            }
+
+            response.FileType = NameToType(response.File);
+;
         }
         private string NameToType(string fileName)
         {

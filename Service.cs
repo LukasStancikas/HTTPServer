@@ -16,8 +16,9 @@ namespace HTTPProject
 
     internal class Service
     {
-        private readonly String RootCatalog =
-            @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
+        private static string DavidsCatalog = @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
+        private static string LukasCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
+        private readonly String RootCatalog = DavidsCatalog;
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -49,32 +50,21 @@ namespace HTTPProject
                 requestLine = "GET /Shutdown.html HTTP/1.1";
             }
         }
-
-
-
-
-        private void AnalyzeFileType()
-        {
-            if (requestedFile.Split('.')[1].Length > 3) ;
-        }
-        private void AnalyzeRequest()
-        {
-
-
-            AnalyzeFileType();
-        }
-       
-
         public void doIt()
         {
 
             try
             {
-               
-                new ReadingRequest(_tcpClient, ref fullRequest, ref requestedFile, ref requestLine);
-                new HandlingRequest(requestLine, ref requestedFile, ref answer);
-                new SendingResponse(_tcpClient, ref answer, RootCatalog, ref requestedFile);
-                
+                HTTPRequest request = new HTTPRequest();
+                HTTPResponse response = new HTTPResponse();
+
+                new ReadingRequest(_tcpClient,ref request);
+                //new ReadingRequest(_tcpClient, ref fullRequest, ref requestedFile, ref requestLine);
+                //new HandlingRequest(requestLine, ref requestedFile, ref answer);
+                new HandlingRequest(ref request, ref response);
+                //new SendingResponse(_tcpClient, ref answer, RootCatalog, ref requestedFile);
+                new SendingResponse(_tcpClient, ref response, RootCatalog);
+
                 Console.WriteLine("Request:" + requestedFile);
             }
             catch (SocketException)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Messaging;
@@ -14,78 +15,59 @@ namespace HTTPProject
     {
         public const int DefaultPort = 8080;
         public const int ShutdownPort = 8081;
-        static void Main(string[] args)
+        private TcpListener serverSocket;
+        private TcpListener closeSocket;
+        private Task[] Tasks;
+        public Server()
+            : this(DefaultPort, ShutdownPort)
         {
-            
-            TcpListener serverSocket = new TcpListener(DefaultPort);
-            TcpListener closeSocket = new TcpListener(ShutdownPort);
+        }
+        public Server(int listeningPort,int closingPort)
+        {
+            serverSocket = new TcpListener(DefaultPort);
+            closeSocket = new TcpListener(ShutdownPort);
             serverSocket.Start();
-         
-            
+
+
             //Console.WriteLine("'start' - start the server");
             Console.WriteLine("To exit connect to 8081 port");
             String Command = "";
             bool ShouldClose = false;
-           
-            Task[] Tasks = new Task[2];
-            Tasks[0] = Task.Factory.StartNew(() => 
+            Tasks = new Task[2];
+
+            Tasks[0] = Task.Factory.StartNew(() =>
             {
-               
                 Console.WriteLine("Server Started");
                 while (ShouldClose == false)
                 {
-                    Service Service = new Service(serverSocket.AcceptTcpClient(),DefaultPort);
-                    Task.Factory.StartNew(() => Service.doIt());
+                    Service WebService = new Service(serverSocket.AcceptTcpClient(), DefaultPort);
+                    Task.Factory.StartNew(() => WebService.doIt());
                 }
-
             });
+
             closeSocket.Start();
+
             Tasks[1] = Task.Factory.StartNew(() =>
             {
-                Service Service2 = new Service(closeSocket.AcceptTcpClient(), ShutdownPort);
-                Task.Factory.StartNew(() => Service2.doIt());
+                Service ShuttingService = new Service(closeSocket.AcceptTcpClient(), ShutdownPort);
+                Task.Factory.StartNew(() => ShuttingService.doIt());
                 ShouldClose = true;
                 Console.WriteLine("Server is shutting down ...");
             });
+            StopServer();
+        }
+
+        public void StopServer()
+        {
             Task.WaitAll(Tasks);
-            closeSocket.Stop();
+            //Tasks[0].Dispose();
             serverSocket.Stop();
-            /*
-            while (Command.ToLower() != "exit")
-            {
-                Command = Console.ReadLine().ToLower();
-                switch (Command.ToLower())
-                {
-                    case "start":
-                        if (Started == false)
-                        {
-                            Task.Factory.StartNew(() =>
-                            {
-                                Started = true;
-                                Console.WriteLine("Server Started");
-                                while (true)
-                                {
-                                    Service Service = new Service(serverSocket.AcceptTcpClient());
-                                    Task.Factory.StartNew(() => Service.doIt());
-                                }
-
-                            });
-                        }
-                        else { Console.WriteLine("Server already Started"); }
-                        break;
-                    case "exit":
-                        break;
-                    default:
-                        Console.WriteLine("Wrong Command");
-                        break;
-
-
-                }
-               
-            }*/
-
-
-            return;
+            closeSocket.Stop();
+            
+        }
+        public static void Main(string[] args)
+        {
+            new Server();
         }
     }
 }
