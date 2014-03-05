@@ -60,18 +60,12 @@ namespace HTTPProject
             // String answer ="HTTP/1.0 200 OK\r\n";
             response = new HTTPResponse("HTTP/1.0",200,"OK",null,null);
 
-            if ((request.Method.Equals("GET")) || (request.Method.Equals("HEAD")) || (request.Method.Equals("POST")))
-            {
-            }
-            else
+            if (!((request.Method.Equals("GET")) || (request.Method.Equals("HEAD")) || (request.Method.Equals("POST"))))
             {
                 response = new HTTPResponse("HTTP/1.0", 400, "Illegal request",null,null);
                 response.File = "/Illegal_Request.html";
             }
-            if ((request.Protocol.Equals("HTTP/1.0")) || (request.Protocol.Equals("HTTP/1.1")))
-            {
-            }
-            else
+            if (!((request.Protocol.Equals("HTTP/1.0")) || (request.Protocol.Equals("HTTP/1.1"))))
             {
                 //answer = "HTTP/1.0 400 Illegal protocol\r\n";
                 response = new HTTPResponse("HTTP/1.0", 400, "protocol",null,null);
@@ -79,10 +73,7 @@ namespace HTTPProject
             }
             String temp = request.Protocol.Substring(0, request.Protocol.Length - 1);
 
-            if ((temp.Equals("HTTP/1.")) || (temp.Equals("HTTP/1.")))
-            {
-            }
-            else
+            if (!((temp.Equals("HTTP/1.")) || (temp.Equals("HTTP/1."))))
             {
                 response = new HTTPResponse("HTTP/1.0", 400, "Illegal request", null,null);
                 response.File = "/Illegal_Request.html";
