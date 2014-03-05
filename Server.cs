@@ -22,6 +22,8 @@ namespace HTTPProject
         private TcpListener closeSocket;
         private Task[] Tasks;
         public static readonly ILog Logger = LogManager.GetLogger(typeof(Server));
+        private static string ExtensionsFile = "/Extensions.txt";
+        public static Dictionary<string, string> allowedTypes = new Dictionary<string, string>();
         public Server()
             : this(DefaultPort, ShutdownPort)
         {
@@ -31,7 +33,7 @@ namespace HTTPProject
             serverSocket = new TcpListener(DefaultPort);
             closeSocket = new TcpListener(ShutdownPort);
             serverSocket.Start();
-          
+            ReadExtensions();
             //Console.WriteLine("'start' - start the server");
             bool ShouldClose = false;
             Tasks = new Task[2];
@@ -70,6 +72,38 @@ namespace HTTPProject
             closeSocket.Stop();
             Logger.Info("Server fully shutdown\r\n --------------------------------------------------------------------");
         }
+
+        public void ReadExtensions()
+        {
+            try
+            {
+                FileStream Extensions = new FileStream(Service.RootCatalog + ExtensionsFile, FileMode.Open);
+                StreamReader ExtReader = new StreamReader(Extensions);
+
+                while (!ExtReader.EndOfStream)
+                {
+                    allowedTypes.Add(ExtReader.ReadLine(), ExtReader.ReadLine());
+                }
+                foreach (var type in allowedTypes)
+                {
+                    Console.WriteLine(type);
+                }
+            }
+            catch (EndOfStreamException)
+            {
+                Logger.Warn("Caught EndOfStream excepsion when reading Extensions");
+            }
+            catch (FileNotFoundException)
+            {
+                Logger.Warn("Caught FileNotFound excepsion when reading Extensions");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Logger.Warn("Caught DirectoryNotFound excepsion when reading Extensions");
+            }
+           
+        }
+
         public static void Main(string[] args)
         {
             FileInfo configFile = new FileInfo(@"..\..\logconfig.xml");

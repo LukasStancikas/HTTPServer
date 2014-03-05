@@ -14,11 +14,11 @@ namespace HTTPProject
      *      
      */
 
-    internal class Service
+    public class Service
     {
         private static string DavidsCatalog = @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
         private static string LukasCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
-        public readonly String RootCatalog = LukasCatalog;
+        public static readonly String RootCatalog = LukasCatalog;
 
         private StreamReader reader;
         private StreamWriter writer;
