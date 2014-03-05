@@ -18,7 +18,7 @@ namespace HTTPProject
     {
         private static string DavidsCatalog = @"C:\Users\Dejv\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
         private static string LukasCatalog = @"C:\Users\Lukas\Documents\Visual Studio 2013\Projects\HTTPServerRepository";
-        private readonly String RootCatalog = DavidsCatalog;
+        private readonly String RootCatalog = LukasCatalog;
 
         private StreamReader reader;
         private StreamWriter writer;
@@ -34,23 +34,16 @@ namespace HTTPProject
             get { return _tcpClient; }
         }
 
-        public Service(TcpClient Client, int Port)
+        public Service(TcpClient Client)
         {
             _tcpClient = Client;
             requestedFile = null;
             requestedFileType = null;
             
             fullRequest = null;
-            if (Port == Server.DefaultPort)
-            {
-                requestLine = null;
-            }
-            if (Port == Server.ShutdownPort)
-            {
-                requestLine = "GET /Shutdown.html HTTP/1.1";
-            }
+          
         }
-        public void doIt()
+        public void doIt(int Port)
         {
 
             try
@@ -58,7 +51,7 @@ namespace HTTPProject
                 HTTPRequest request = new HTTPRequest();
                 HTTPResponse response = new HTTPResponse();
 
-                new ReadingRequest(_tcpClient,ref request);
+                new ReadingRequest(_tcpClient,ref request, Port);
                 //new ReadingRequest(_tcpClient, ref fullRequest, ref requestedFile, ref requestLine);
                 //new HandlingRequest(requestLine, ref requestedFile, ref answer);
                 new HandlingRequest(ref request, ref response);

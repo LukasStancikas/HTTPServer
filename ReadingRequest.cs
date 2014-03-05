@@ -12,13 +12,16 @@ namespace HTTPProject
 {
     class ReadingRequest
     {
-        public ReadingRequest(TcpClient Client, ref HTTPRequest request)
+        public ReadingRequest(TcpClient Client, ref HTTPRequest request, int Port)
         {
             string line = "";
             String fullRequest = "";
             String requestedFile = null;
             String requestLine = null;
-
+            if (Port == Server.ShutdownPort)
+            {
+                requestLine = "GET /Shutdown.html HTTP/1.1";
+            }
             StreamReader reader = new StreamReader(Client.GetStream());
             line = reader.ReadLine();
             if (requestLine == null)
@@ -35,9 +38,9 @@ namespace HTTPProject
                 requestedFile = Uri.UnescapeDataString(requestedFile);
                 Console.WriteLine(requestedFile);
             }
-            catch (Exception e)
+            catch (NullReferenceException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Caught: Null Reference exception - invald format of request");
             }
             fullRequest += line + "\r\n";
             do

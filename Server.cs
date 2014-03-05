@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using log4net;
 
 namespace HTTPProject
 {
@@ -18,6 +20,7 @@ namespace HTTPProject
         private TcpListener serverSocket;
         private TcpListener closeSocket;
         private Task[] Tasks;
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(Server));
         public Server()
             : this(DefaultPort, ShutdownPort)
         {
@@ -40,8 +43,9 @@ namespace HTTPProject
                 Console.WriteLine("Server Started");
                 while (ShouldClose == false)
                 {
-                    Service WebService = new Service(serverSocket.AcceptTcpClient(), DefaultPort);
-                    Task.Factory.StartNew(() => WebService.doIt());
+                    
+                    Service WebService = new Service(serverSocket.AcceptTcpClient());
+                    Task.Factory.StartNew(() => WebService.doIt(DefaultPort));
                 }
             });
 
@@ -49,18 +53,19 @@ namespace HTTPProject
 
             Tasks[1] = Task.Factory.StartNew(() =>
             {
-                Service ShuttingService = new Service(closeSocket.AcceptTcpClient(), ShutdownPort);
-                Task.Factory.StartNew(() => ShuttingService.doIt());
+                Service ShuttingService = new Service(closeSocket.AcceptTcpClient());
+                Task.Factory.StartNew(() => ShuttingService.doIt(ShutdownPort));
+
                 ShouldClose = true;
                 Console.WriteLine("Server is shutting down ...");
+                Thread.Sleep(1000);
             });
             StopServer();
         }
 
         public void StopServer()
         {
-            Task.WaitAll(Tasks);
-            //Tasks[0].Dispose();
+            Task.WaitAny(Tasks);
             serverSocket.Stop();
             closeSocket.Stop();
             
